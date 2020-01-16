@@ -1,0 +1,9 @@
+[submodule "secureapi_web"]
+	path = secureapi_web
+	url = https://github.com/hidalgopl/secureapi-web
+[submodule "test_saver"]
+	path = test_saver
+	url = https://github.com/hidalgopl/test-saver
+[submodule "secureapi-boatswain"]
+	path = secureapi-boatswain
+	url = https://github.com/hidalgopl/secureapi-boatswain

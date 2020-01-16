@@ -1,0 +1,68 @@
+version: '3.4'
+
+volumes:
+  local_postgres_data: {}
+  local_postgres_data_backups: {}
+
+services:
+  nats:
+    image: nats:latest
+    ports:
+      - "4222:4222"
+    command: "-DV"
+#    volumes:
+#      - ./config/:/etc/nats
+    #command: ["-DV", "--user admin", "--pass secureapigonnakickyourasses"]
+
+  django:
+    build:
+      context: ./secureapi_web/
+      dockerfile: ./compose/local/django/Dockerfile
+    image: secureapi_web_local_django
+    depends_on:
+      - postgres
+    volumes:
+      - ./secureapi_web:/app
+    env_file:
+      - ./secureapi_web/.envs/.local/.django
+      - ./secureapi_web/.envs/.local/.postgres
+    ports:
+      - "8072:8000"
+    command: /start
+
+  postgres:
+    build:
+      context: ./secureapi_web
+      dockerfile: ./compose/production/postgres/Dockerfile
+    image: secureapi_web_production_postgres
+    volumes:
+      - local_postgres_data:/var/lib/postgresql/data
+      - local_postgres_data_backups:/backups
+    env_file:
+      - ./secureapi_web/.envs/.local/.postgres
+    ports:
+      - "5344:5342"
+
+  test_saver:
+    build:
+      context: ./test_saver
+      dockerfile: Dockerfile
+    image: test_saver_local
+    env_file:
+      - ./test_saver/template.env
+    depends_on:
+      - nats
+      - postgres
+
+  boatswain:
+    build:
+      network: host
+      context: ./secureapi-boatswain
+      dockerfile: Dockerfile
+    image: boatswain_local
+    env_file:
+      - ./secureapi-boatswain/template.env
+    depends_on:
+      - nats
+
+#docker run -p 4222:4222 nats:latest -DV --user admin --pass secureapigonnakickyourasses
