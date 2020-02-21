@@ -25,5 +25,6 @@ DB to persist user's data & tests.
 Component which listens for new messages on NATS (which are published by [sailor](https://github.com/hidalgopl/sailor) - our CLI tool. If he receives one, it runs security checks for given URL and publish results back to NATS queue.
 ### SecureAPI-Web
 REST API for web interface. Written in django.
+Swagger available on http://localhost:8072/swagger
 ### Test-saver
 Component which listens for _complete_ messages in NATS, then takes result from message and saves it to DB.
