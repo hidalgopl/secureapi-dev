@@ -1,0 +1,69 @@
+version: '3.4'
+
+services:
+  nats:
+    image: nats:latest
+#    labels:
+#      - "traefik.enable=true"
+#      - "traefik.http.routers.whoami.rule=Host(`nats.secureapi.dev`)"
+#      - "traefik.http.routers.whoami.tls.certresolver=myresolver"
+    ports:
+      - "4222:4222"
+    command: "-DV"
+#    volumes:
+#      - ./config/:/etc/nats
+    #command: ["-DV", "--user admin", "--pass secureapigonnakickyourasses"]
+
+  django:
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.django.rule=Host(`secureapi.dev`)"
+      - "traefik.http.routers.django.entrypoints=websecure"
+      - "traefik.http.routers.django.tls.certresolver=myresolver"
+      - "traefik.http.middlewares.test-auth.basicauth.users=admin:$$apr1$$zj4BEnZP$$hgOiZ5OBa23uVe0OLoT3l/"
+    image: secureapi/web:latest
+    volumes:
+      - ./secureapi_web:/app
+    env_file:
+      - ./secureapi_web/.envs/.local/.django
+    ports:
+      - "8072:8000"
+    command: /start
+
+  test_saver:
+    image: secureapi/test_saver:latest
+    env_file:
+      - ./test_saver/template.env
+    depends_on:
+      - nats
+      - postgres
+
+  boatswain:
+    image: secureapi/boatswain:latest
+    env_file:
+      - ./secureapi-boatswain/template.env
+    depends_on:
+      - nats
+
+  traefik:
+    image: "traefik:v2.1"
+    container_name: "traefik"
+    command:
+      #- "--log.level=DEBUG"
+      - "--api.insecure=true"
+      - "--providers.docker=true"
+      - "--providers.docker.exposedbydefault=false"
+      - "--entrypoints.web.address=:80"
+      - "--entrypoints.websecure.address=:443"
+      - "--certificatesresolvers.myresolver.acme.httpchallenge=true"
+      - "--certificatesresolvers.myresolver.acme.httpchallenge.entrypoint=web"
+      #- "--certificatesresolvers.myresolver.acme.caserver=https://acme-staging-v02.api.letsencrypt.org/directory"
+      - "--certificatesresolvers.myresolver.acme.email=pawebojanowski@gmail.com"
+      - "--certificatesresolvers.myresolver.acme.storage=/letsencrypt/acme.json"
+    ports:
+      - "80:8000"
+      - "443:443"
+      - "8080:8080"
+    volumes:
+      - "./letsencrypt:/letsencrypt"
+      - "/var/run/docker.sock:/var/run/docker.sock:ro"
