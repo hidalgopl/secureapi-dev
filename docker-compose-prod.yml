@@ -25,7 +25,7 @@ services:
     volumes:
       - ./secureapi_web:/app
     env_file:
-      - ./secureapi_web/.envs/.local/.django
+      - .template.env
     ports:
       - "8072:8000"
     command: /start
@@ -33,7 +33,7 @@ services:
   test_saver:
     image: secureapi/test_saver:latest
     env_file:
-      - ./test_saver/template.env
+      - .template.env
     depends_on:
       - nats
       - postgres
@@ -41,7 +41,7 @@ services:
   boatswain:
     image: secureapi/boatswain:latest
     env_file:
-      - ./secureapi-boatswain/template.env
+      - .template.env
     depends_on:
       - nats
 
