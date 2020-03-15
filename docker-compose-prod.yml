@@ -36,7 +36,6 @@ services:
       - .template.env
     depends_on:
       - nats
-      - postgres
 
   boatswain:
     image: secureapi/boatswain:latest
