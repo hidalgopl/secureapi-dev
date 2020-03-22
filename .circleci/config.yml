@@ -1,0 +1,26 @@
+ version: 2
+
+ jobs:
+   deploy:
+     machine:
+       enabled: true
+     steps:
+       - run:
+           name: Deploy Over SSH
+           command: |
+             ssh $SSH_USER@$SSH_HOST sudo docker-compose -f /home/ubuntu/app/secureapi-dev/docker-compose-prod.yml up --env-file=/home/ubuntu/app/secureapi-dev/.template.env
+
+ workflows:
+   version: 2
+   deploy-staging:
+     jobs:
+       - deploy:
+           filters:
+             branches:
+               only: staging
+   deploy-prod:
+     jobs:
+       - deploy:
+           filters:
+             branches:
+               only: prod
