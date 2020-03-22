@@ -28,3 +28,23 @@ REST API for web interface. Written in django.
 Swagger available on http://localhost:8072/swagger
 ### Test-saver
 Component which listens for _complete_ messages in NATS, then takes result from message and saves it to DB.
+
+
+## Generating test data
+1. Log in using Github
+2. Go to "User profile" tab and copy access_key
+3. Create following `secureapi.yml` file:
+```yaml
+username: "<your-username>" # should be the same as on github
+accessKey: "<your-accesskey>"
+url: "https://api.facebook.com" # URL you want to test
+natsUrl: "nats://localhost:4222" # this is address for NATS started by docker-compose
+```
+4. Run backends `docker-compose up`
+5. Download latest [sailor CLI](https://github.com/hidalgopl/sailor) release, and run binary to execute tests: `sailor run --config=secureapi.yml`
+6. Test should appear on top of Tests tab (latest are on top)
+
+### Debugging:
+1. Check if docker containers are up.
+2. `docker-compose logs boatswain` -> check if tests were executed
+2. `docker-compose logs test_saver` -> check if tests were saved to DB
