@@ -1,10 +1,13 @@
  version: 2
 
  jobs:
-   deploy:
+   deploy-staging:
      machine:
        enabled: true
      steps:
+       - add_ssh_keys:
+           fingerprints:
+             - "b9:a8:15:64:bb:2b:e4:24:42:da:a7:e7:3f:9e:99:e2"
        - run:
            name: Deploy Over SSH
            command: |
@@ -14,7 +17,7 @@
    version: 2
    deploy-staging:
      jobs:
-       - deploy:
+       - deploy-staging:
            filters:
              branches:
                only: staging
