@@ -24,17 +24,23 @@ services:
       # - "traefik.http.routers.django.tls.certresolver=myresolver"
       # - "traefik.http.middlewares.test-auth.basicauth.users=admin:$$apr1$$zj4BEnZP$$hgOiZ5OBa23uVe0OLoT3l/"
     image: secureapi/web:latest
+    env_file:
+      - .template.env
     ports:
       - "8072:8000"
     command: /start
 
   test_saver:
     image: secureapi/test_saver:latest
+    env_file:
+      - .template.env
     depends_on:
       - nats
 
   boatswain:
     image: secureapi/boatswain:latest
+    env_file:
+      - .template.env
     depends_on:
       - nats
 
