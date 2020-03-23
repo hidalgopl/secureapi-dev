@@ -15,7 +15,9 @@
        - run:
            name: Start docker compose
            command: |
-             ssh -vvv $SSH_USER@$SSH_HOST cd app/secureapi-dev && ls && sudo docker-compose -f docker-compose-prod.yml up --force-recreate -d
+             ssh -vvv $SSH_USER@$SSH_HOST cd app/secureapi-dev && pwd
+          # && sudo docker-compose -f docker-compose-prod.yml up --force-recreate -d
+
 
  workflows:
    version: 2
