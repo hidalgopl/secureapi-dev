@@ -8,6 +8,10 @@
        - add_ssh_keys:
            fingerprints:
              - "b9:a8:15:64:bb:2b:e4:24:42:da:a7:e7:3f:9e:99:e2"
+       - run:
+           name: check docker version
+           command: |
+             docker-compose version
 #       - run:
 #           name: Pull docker images
 #           command: |
@@ -15,7 +19,7 @@
        - run:
            name: Start docker compose
            command: |
-             ssh  $SSH_USER@$SSH_HOST /home/ubuntu/app/secureapi-dev/start.sh
+             ssh  $SSH_USER@$SSH_HOST sudo docker-compose --env-file /home/ubuntu/app/secureapi-dev/.template.env -f /home/ubuntu/app/secureapi-dev/docker-compose-prod.yml up --force-recreate -d
           # && sudo docker-compose -f docker-compose-prod.yml up --force-recreate -d
 
 
