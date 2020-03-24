@@ -16,10 +16,22 @@
 #           name: Pull docker images
 #           command: |
 #             ssh $SSH_USER@$SSH_HOST sudo docker-compose -f /home/ubuntu/app/secureapi-dev/docker-compose-prod.yml pull
+#       - run:
+#           name: Start docker compose
+#           command: |
+#             ssh  $SSH_USER@$SSH_HOST sudo docker-compose --env-file /home/ubuntu/app/secureapi-dev/.template.env -f /home/ubuntu/app/secureapi-dev/docker-compose-prod.yml up --force-recreate -d
+#          # && sudo docker-compose -f docker-compose-prod.yml up --force-recreate -d
+
        - run:
-           name: Start docker compose
+           name: log via ssh
            command: |
-             ssh  $SSH_USER@$SSH_HOST sudo docker-compose --env-file /home/ubuntu/app/secureapi-dev/.template.env -f /home/ubuntu/app/secureapi-dev/docker-compose-prod.yml up --force-recreate -d
+             ssh  $SSH_USER@$SSH_HOST
+          # && sudo docker-compose -f docker-compose-prod.yml up --force-recreate -d
+
+       - run:
+           name: pwd
+           command: |
+             pwd && uname -a
           # && sudo docker-compose -f docker-compose-prod.yml up --force-recreate -d
 
 
