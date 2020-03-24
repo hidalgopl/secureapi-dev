@@ -25,7 +25,7 @@
        - run:
            name: log via ssh
            command: |
-             ssh  $SSH_USER@$SSH_HOST
+             ssh  $SSH_USER@$SSH_HOST && sudo docker-compose --env-file /home/ubuntu/app/secureapi-dev/.template.env -f /home/ubuntu/app/secureapi-dev/docker-compose-prod.yml up --force-recreate -d
           # && sudo docker-compose -f docker-compose-prod.yml up --force-recreate -d
 
        - run:
