@@ -15,7 +15,7 @@
        - run:
            name: Start docker compose
            command: |
-             ssh -vvv $SSH_USER@$SSH_HOST ./home/ubuntu/app/secureapi-dev/start.sh
+             ssh  $SSH_USER@$SSH_HOST /home/ubuntu/app/secureapi-dev/start.sh
           # && sudo docker-compose -f docker-compose-prod.yml up --force-recreate -d
 
 
