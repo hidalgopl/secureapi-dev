@@ -3,6 +3,10 @@ version: '3.4'
 services:
   nats:
     image: nats:latest
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "5m"
 #    labels:
 #      - "traefik.enable=true"
 #      - "traefik.http.routers.whoami.rule=Host(`nats.secureapi.dev`)"
@@ -47,6 +51,10 @@ services:
   traefik:
     image: "traefik:v2.1"
     container_name: "traefik"
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "5m"
     command:
       - "--log.level=DEBUG"
       - "--api.insecure=true"
