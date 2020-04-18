@@ -31,6 +31,7 @@ jobs:
         key: ${{ secrets.KEY }}
         port: ${{ secrets.PORT }}
         script: |
+          cd app/secureapi-dev/
           git pull origin master
           sudo docker-compose -f docker-compose-prod.yml config
 #          sudo docker-compose -f docker-compose-prod.yml pull
