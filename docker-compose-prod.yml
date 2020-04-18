@@ -3,30 +3,20 @@ version: '3.4'
 services:
   nats:
     image: nats:latest
-    logging:
-      driver: "json-file"
-      options:
-        max-size: "5m"
-#    labels:
-#      - "traefik.enable=true"
-#      - "traefik.http.routers.whoami.rule=Host(`nats.secureapi.dev`)"
-#      - "traefik.http.routers.whoami.tls.certresolver=myresolver"
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.nats.rule=Host(`apistaging.secureapi.dev`)"
+      - "traefik.http.routers.nats.entrypoints=nats"
     ports:
       - "4222:4222"
     command: "-DV"
-#    volumes:
-#      - ./config/:/etc/nats
-    #command: ["-DV", "--user admin", "--pass secureapigonnakickyourasses"]
 
   django:
     labels:
       - "traefik.enable=true"
-      - "traefik.http.routers.django.rule=Host(`ec2-63-33-207-229.eu-west-1.compute.amazonaws.com`)"
-      - "traefik.http.routers.django.entrypoints=web"
-      - "traefik.http.middlewares.testheader.headers.accesscontrolalloworigin=wp.pl"
-      - "traefik.http.middlewares.testheader.headers.accesscontrolmaxage=100"
-      # - "traefik.http.routers.django.tls.certresolver=myresolver"
-      # - "traefik.http.middlewares.test-auth.basicauth.users=admin:$$apr1$$zj4BEnZP$$hgOiZ5OBa23uVe0OLoT3l/"
+      - "traefik.http.routers.django.rule=Host(`apistaging.secureapi.dev`)"
+      - "traefik.http.routers.django.entrypoints=websecure"
+      - "traefik.http.routers.django.tls.certresolver=myresolver"
     image: secureapi/web:latest
     env_file:
       - .template.env
@@ -51,24 +41,17 @@ services:
   traefik:
     image: "traefik:v2.1"
     container_name: "traefik"
-    logging:
-      driver: "json-file"
-      options:
-        max-size: "5m"
     command:
       - "--log.level=DEBUG"
       - "--api.insecure=true"
       - "--providers.docker=true"
       - "--providers.docker.exposedbydefault=false"
-      - "--entrypoints.web.address=:80"
-      # - "--entrypoints.websecure.address=:443"
-      # - "--certificatesresolvers.myresolver.acme.httpchallenge=true"
-      # - "--certificatesresolvers.myresolver.acme.httpchallenge.entrypoint=web"
-      #- "--certificatesresolvers.myresolver.acme.caserver=https://acme-staging-v02.api.letsencrypt.org/directory"
-      # - "--certificatesresolvers.myresolver.acme.email=pawebojanowski@gmail.com"
-      # - "--certificatesresolvers.myresolver.acme.storage=/letsencrypt/acme.json"
+      - "--entrypoints.nats.address=:4222"
+      - "--entrypoints.websecure.address=:443"
+      - "--certificatesresolvers.myresolver.acme.tlschallenge=true"
+      - "--certificatesresolvers.myresolver.acme.email=pbojanowski@protonmail.com"
+      - "--certificatesresolvers.myresolver.acme.storage=/letsencrypt/acme.json"
     ports:
-      - "80:80"
       - "443:443"
       - "8080:8080"
     volumes:
