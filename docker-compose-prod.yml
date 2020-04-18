@@ -9,7 +9,7 @@ services:
       - "traefik.http.routers.nats.entrypoints=nats"
     ports:
       - "4222:4222"
-    command: "-DV -c nats_prod.conf"
+    command: "-DV"
 
   django:
     labels:
