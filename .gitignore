@@ -1,2 +1,3 @@
 nats_prod.conf
 .template.env
+nats_prod.conf
