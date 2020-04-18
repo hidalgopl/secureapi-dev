@@ -33,5 +33,5 @@ jobs:
         script: |
           cd app/secureapi-dev/
           git pull origin master
-          sudo docker-compose -f docker-compose-prod.yml pull
-          sudo docker-compose -f docker-compose-prod.yml up -d --force-recreate
+          COMPOSE_HTTP_TIMEOUT=200 sudo docker-compose -f docker-compose-prod.yml pull
+          COMPOSE_HTTP_TIMEOUT=200 sudo docker-compose -f docker-compose-prod.yml up -d --force-recreate
