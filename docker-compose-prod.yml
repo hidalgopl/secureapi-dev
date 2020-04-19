@@ -17,7 +17,7 @@ services:
       - "traefik.http.routers.django.rule=Host(`apistaging.secureapi.dev`)"
       - "traefik.http.routers.django.entrypoints=websecure"
       - "traefik.http.routers.django.tls.certresolver=myresolver"
-    image: secureapi/web:cbb77bc37784d165e3d12da5420a2ce2123ac23b
+    image: secureapi/web:92062849af2b940f1694c9c8f65980a2558a4c3c
     env_file:
       - .template.env
     ports:
@@ -32,7 +32,7 @@ services:
       - nats
 
   boatswain:
-    image: secureapi/boatswain:86ea38938751545ac49c054c58653da0b986bbdd
+    image: secureapi/boatswain:96f525ad639db56ecce725ec1de4baeb5bf903a4
     env_file:
       - .template.env
     depends_on:
