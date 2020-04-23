@@ -34,9 +34,6 @@ jobs:
           git pull origin master
           COMPOSE_HTTP_TIMEOUT=200 sudo docker-compose -f docker-compose-prod.yml pull
           COMPOSE_HTTP_TIMEOUT=200 sudo docker-compose -f docker-compose-prod.yml up -d --force-recreate
-  security-tests:
-    runs-on: ubuntu-latest
-    steps:
     - name: Run sailor
       uses: secureapi/sailor-action@master
       with:
