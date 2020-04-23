@@ -48,3 +48,8 @@ natsUrl: "nats://localhost:4222" # this is address for NATS started by docker-co
 1. Check if docker containers are up.
 2. `docker-compose logs boatswain` -> check if tests were executed
 2. `docker-compose logs test_saver` -> check if tests were saved to DB
+
+
+## Deploying
+To deploy new version, just create a commit with updated docker images tags in [compose](docker-compose-prod.yml). Then, tag the commit in semver standard (`v*.*.*`) and push to master.
+CI will deploy to all envs and run security tests on new release.
