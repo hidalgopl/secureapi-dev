@@ -38,5 +38,5 @@ jobs:
       uses: secureapi/sailor-action@master
       with:
         url: "https://apistaging.secureapi.dev/tests/my"
-        username: ${{ secrets.USERNAME }}
-        access_key: ${{ secrets.ACCESS_KEY }}
+        username: ${{ secrets.SECUREAPI_USERNAME }}
+        access_key: ${{ secrets.SECUREAPI_ACCESS_KEY }}
