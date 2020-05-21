@@ -17,7 +17,7 @@ services:
       - "traefik.http.routers.django.rule=Host(`apistaging.secureapi.dev`)"
       - "traefik.http.routers.django.entrypoints=websecure"
       - "traefik.http.routers.django.tls.certresolver=myresolver"
-    image: secureapi/web:7155d7c63253d77dc4df7eda22589370a328a81c
+    image: secureapi/web:1adbdf27030d00ddf9e439ed0cbec63a820abcd3
     env_file:
       - .template.env
     ports:
